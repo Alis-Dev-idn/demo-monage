@@ -36,7 +36,7 @@ export async function initDemoEnvironment(): Promise<void> {
   // 3. Start MSW worker
   try {
     await worker.start({
-      onUnhandledRequest: "bypass",
+      onUnhandledRequest: "warn",
       serviceWorker: {
         url: "/mockServiceWorker.js",
       },

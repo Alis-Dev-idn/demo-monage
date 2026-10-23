@@ -143,12 +143,77 @@ export const authHandlers = [
     );
   }),
 
+  // ── Demo Ephemeral Session Login (Landing Page CTA) ───────────────────────
+  http.post(endpoint("/auth/demo"), async () => {
+    setActivePersona("personal");
+    __setActiveTier("personal");
+
+    const user = await resolveUserByPersona("personal");
+    const tokens = makeTokens("personal");
+
+    if (typeof window !== "undefined") {
+      window.sessionStorage.setItem("monage:mock:activePersona", "personal");
+      window.sessionStorage.setItem("monage:auth:accessToken", tokens.accessToken);
+      window.localStorage.setItem("monage:activePersona", "personal");
+      window.localStorage.setItem("monage:activeBookId", "book-personal");
+      window.localStorage.setItem("monage:auth:user", JSON.stringify(user));
+    }
+
+    return HttpResponse.json(
+      {
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
+        user,
+        activeBookId: "book-personal",
+      },
+      {
+        status: 201,
+        headers: { "Set-Cookie": makeRefreshCookie(tokens.refreshToken) },
+      },
+    );
+  }),
+
   // ── Kasir Login (Username + PIN) ───────────────────────────────────────────
+  http.post(endpoint("/auth/cashier/login"), async () => {
+    setActivePersona("business");
+    __setActiveTier("business");
+    const user = await resolveUserByPersona("business");
+    const tokens = makeTokens("cashier");
+    const cashierUser = {
+      ...user,
+      name: "Kasir Warung",
+      role: "cashier",
+    };
+
+    if (typeof window !== "undefined") {
+      window.sessionStorage.setItem("monage:mock:activePersona", "business");
+      window.sessionStorage.setItem("monage:auth:accessToken", tokens.accessToken);
+      window.localStorage.setItem("monage:activePersona", "business");
+      window.localStorage.setItem("monage:activeBookId", "book-business-warung");
+      window.localStorage.setItem("monage:auth:user", JSON.stringify(cashierUser));
+    }
+
+    return HttpResponse.json(
+      {
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
+        user: cashierUser,
+        bookId: "book-business-warung",
+      },
+      { headers: { "Set-Cookie": makeRefreshCookie(tokens.refreshToken) } },
+    );
+  }),
+
   http.post(endpoint("/auth/cashier-login"), async () => {
     const user = await resolveUserByPersona("business");
     const tokens = makeTokens("cashier");
     return HttpResponse.json(
-      { accessToken: tokens.accessToken, user },
+      {
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
+        user: { ...user, name: "Kasir Warung", role: "cashier" },
+        bookId: "book-business-warung",
+      },
       { headers: { "Set-Cookie": makeRefreshCookie(tokens.refreshToken) } },
     );
   }),

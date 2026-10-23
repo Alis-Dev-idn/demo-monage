@@ -50,6 +50,7 @@ export function setupApi(): void {
  */
 const BOOK_AGNOSTIC_PREFIXES = [
   "/auth",
+  "/demo",
   "/books",
   "/subscription",
   "/invitations",
