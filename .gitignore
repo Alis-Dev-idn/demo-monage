@@ -1,0 +1,40 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies and build outputs
+node_modules
+dist
+dist-ssr
+
+# Local environment & secrets
+.env.local
+.env.*.local
+.env.production
+*.pem
+*.key
+*.pfx
+*.p12
+*.secret
+
+# Local governance, docs, and reports (local only - not for github)
+AGENT.md
+.agent/
+docs/
+reports/
+
+# Editor and OS files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

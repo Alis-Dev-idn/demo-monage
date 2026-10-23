@@ -1,0 +1,10 @@
+/* Modal: hanya token & keyframes. Semua layout pakai Tailwind di komponen. */
+
+:root {
+  --mdl-bg:           #ffffff;
+  --mdl-border:       #e5e7eb;
+  --mdl-shadow:       0 20px 25px -5px rgba(0, 0, 0, 0.1),
+                      0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --mdl-radius:       8px;
+  --mdl-radius-sheet: 16px;
+}

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="apple-touch-icon" href="/logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Monage WebApps</title>
+  </head>
+  <body>
+    <!--
+      Konten awal di dalam #root = fallback statis untuk crawler TANPA JS
+      (mis. pengecek homepage verifikasi OAuth Google, yang sering tidak
+      mengeksekusi JavaScript). React menggantinya saat mount (createRoot
+      .render() menimpa isi #root), tapi pada HTML mentah yang dikirim server
+      anchor <a href> ke Kebijakan Privasi & Syarat sudah hadir & terlihat —
+      memenuhi syarat "home page harus menaut ke privacy policy".
+    -->
+    <div id="root">
+      <main style="font-family: system-ui, sans-serif; max-width: 680px; margin: 0 auto; padding: 48px 24px; line-height: 1.6;">
+        <h1>Monage</h1>
+        <p><strong>Monage</strong> is a personal finance management app for the web
+          and Android. It helps you record income, expenses, transfers, budgets,
+          and savings across multiple books, with clear visual reports of your
+          money flow.</p>
+        <p>Monage offers an optional backup feature. When you choose to connect
+          Google Drive, the app requests the <code>drive.appdata</code> scope so it
+          can store, list, download, and delete <em>your own</em> backup files in a
+          hidden application folder on your Google Drive. Monage never accesses any
+          other files in your Drive, and this data is used only to provide the
+          backup and restore feature — it is never sold or used for advertising.</p>
+        <nav>
+          <a href="https://monage.my.id/privacy.html">Privacy Policy</a>
+          &nbsp;·&nbsp;
+          <a href="https://monage.my.id/terms.html">Terms of Service</a>
+        </nav>
+      </main>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

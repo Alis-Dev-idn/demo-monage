@@ -1,0 +1,47 @@
+:root {
+  /* Transaksi — disebut "Uang Masuk / Keluar / Transfer" di UI */
+  --color-in: #10b981;
+  --color-in-bg: #ecfdf5;
+  --color-out: #f97316;
+  --color-out-bg: #fff7ed;
+  --color-transfer: #3b82f6;
+  --color-transfer-bg: #eff6ff;
+
+  /* Budget threshold */
+  --color-budget-safe: #10b981;
+  --color-budget-warn: #f59e0b;
+  --color-budget-over: #ef4444;
+
+  /* Tone palette — paralel ke kategori/akun (kelas Tone) */
+  --tone-emerald-fg: #047857;
+  --tone-emerald-bg: #d1fae5;
+  --tone-orange-fg: #c2410c;
+  --tone-orange-bg: #ffedd5;
+  --tone-blue-fg: #1d4ed8;
+  --tone-blue-bg: #dbeafe;
+  --tone-amber-fg: #b45309;
+  --tone-amber-bg: #fef3c7;
+  --tone-cyan-fg: #0e7490;
+  --tone-cyan-bg: #cffafe;
+  --tone-violet-fg: #6d28d9;
+  --tone-violet-bg: #ede9fe;
+  --tone-rose-fg: #be123c;
+  --tone-rose-bg: #ffe4e6;
+  --tone-accent-fg: #4338ca;
+  --tone-accent-bg: #e0e7ff;
+  --tone-neutral-fg: #374151;
+  --tone-neutral-bg: #f3f4f6;
+}
+
+@theme inline {
+  /* Tailwind v4 — expose token sebagai utility (bg-in, text-out, dst.) */
+  --color-in: var(--color-in);
+  --color-in-bg: var(--color-in-bg);
+  --color-out: var(--color-out);
+  --color-out-bg: var(--color-out-bg);
+  --color-transfer: var(--color-transfer);
+  --color-transfer-bg: var(--color-transfer-bg);
+  --color-budget-safe: var(--color-budget-safe);
+  --color-budget-warn: var(--color-budget-warn);
+  --color-budget-over: var(--color-budget-over);
+}

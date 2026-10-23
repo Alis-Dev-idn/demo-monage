@@ -1,0 +1,106 @@
+/* ═══════════════════════════════════════════════════════
+   Dashboard Template – theme tokens & keyframes only.
+   Semua layout & styling lain pakai Tailwind utilities
+   (lihat masing-masing komponen). Token di sini di-konsumsi
+   lewat arbitrary value Tailwind: `bg-[var(--db-bg)]`, dst.
+   ═══════════════════════════════════════════════════════ */
+
+:root,
+[data-dashboard-theme="light"] {
+  --db-bg:                #f5f7fb;
+  --db-surface:           #ffffff;
+  --db-surface-2:         #f1f5f9;
+  --db-surface-elev:      #ffffff;
+  --db-border:            #e5e9f0;
+  --db-border-strong:     #d4dae3;
+
+  --db-text-primary:      #0f172a;
+  --db-text-secondary:    #64748b;
+  --db-text-muted:        #94a3b8;
+
+  --db-sidebar-bg:        #ffffff;
+  --db-sidebar-text:      #475569;
+  --db-sidebar-hover:     rgba(15, 23, 42, 0.05);
+  --db-sidebar-active-bg: rgba(59, 130, 246, 0.12);
+  --db-sidebar-active-text: #1d4ed8;
+  --db-sidebar-active-bar:  #3b82f6;
+
+  --db-navbar-bg:         rgba(255, 255, 255, 0.85);
+  --db-navbar-border:     #e5e9f0;
+
+  --db-accent:            #3b82f6;
+  --db-accent-soft:       rgba(59, 130, 246, 0.12);
+  --db-danger:            #ef4444;
+  --db-danger-soft:       rgba(239, 68, 68, 0.12);
+
+  --db-shadow-md:         0 10px 30px -10px rgba(15, 23, 42, 0.18);
+  --db-shadow-pop:        0 10px 28px -12px rgba(15, 23, 42, 0.25);
+
+  --db-navbar-height: 64px;
+  --db-radius-sm: 8px;
+  --db-radius:    12px;
+  --db-sidebar-width-full: 260px;
+  --db-sidebar-width-collapsed: 72px;
+}
+
+[data-dashboard-theme="dark"] {
+  --db-bg:                #0b1220;
+  --db-surface:           #111a2e;
+  --db-surface-2:         #0e1729;
+  --db-surface-elev:      #15203a;
+  --db-border:            rgba(255, 255, 255, 0.08);
+  --db-border-strong:     rgba(255, 255, 255, 0.14);
+
+  --db-text-primary:      #e6edf7;
+  --db-text-secondary:    #9aa6ba;
+  --db-text-muted:        #6b7791;
+
+  --db-sidebar-bg:        #0d1424;
+  --db-sidebar-text:      #9aa6ba;
+  --db-sidebar-hover:     rgba(255, 255, 255, 0.05);
+  --db-sidebar-active-bg: rgba(56, 189, 248, 0.14);
+  --db-sidebar-active-text: #7dd3fc;
+  --db-sidebar-active-bar:  #38bdf8;
+
+  --db-navbar-bg:         rgba(13, 20, 36, 0.7);
+  --db-navbar-border:     rgba(255, 255, 255, 0.06);
+
+  --db-accent:            #38bdf8;
+  --db-accent-soft:       rgba(56, 189, 248, 0.14);
+  --db-danger:            #f87171;
+  --db-danger-soft:       rgba(248, 113, 113, 0.16);
+
+  --db-shadow-md:         0 14px 40px -16px rgba(0, 0, 0, 0.6);
+  --db-shadow-pop:        0 18px 40px -16px rgba(0, 0, 0, 0.7);
+}
+
+/* Sidebar nav scrollbar — kept here because Tailwind v4 tidak punya
+   utility built-in untuk ::-webkit-scrollbar. */
+.db-scroll {
+  scrollbar-width: thin;
+}
+.db-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+.db-scroll::-webkit-scrollbar-thumb {
+  background: var(--db-border-strong);
+  border-radius: 999px;
+}
+
+/* Skeleton shimmer (cross-browser, tidak ada utility setara di Tailwind). */
+.db-skeleton {
+  background: linear-gradient(90deg, var(--db-border) 25%, var(--db-border-strong) 50%, var(--db-border) 75%);
+  background-size: 200% 100%;
+  animation: db-skeleton-shimmer 1.2s infinite ease-in-out;
+}
+@keyframes db-skeleton-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Popover masuk dari atas. */
+.db-popover-in {
+  animation: db-popover-in 0.16s ease-out;
+}
+@keyframes db-popover-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,43 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   Auth Variants — minimal CSS
+   ───────────────────────────────────────────────────────────────────────
+   Most styling is Tailwind in the variant components themselves. This
+   file is reserved for effects that are awkward to express inline:
+     - the soft radial glows behind the dark-split variant
+     - the subtle grid background overlay
+   Keep additions here strictly visual, no layout / spacing.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.auth-glow {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(96px);
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.auth-glow--cyan {
+  top: -8rem;
+  left: -8rem;
+  width: 24rem;
+  height: 24rem;
+  background-color: #22d3ee;
+}
+
+.auth-glow--purple {
+  bottom: -8rem;
+  right: -8rem;
+  width: 24rem;
+  height: 24rem;
+  background-color: #a78bfa;
+}
+
+.auth-grid-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 40px 40px;
+}

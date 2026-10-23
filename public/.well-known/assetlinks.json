@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.monage.app",
+      "sha256_cert_fingerprints": [
+        "CF:2D:2E:BC:D7:AE:DD:DD:D9:45:7A:49:58:04:12:3A:10:F2:20:60:27:06:EB:D8:04:C9:87:F9:69:BE:CA:46"
+      ]
+    }
+  }
+]

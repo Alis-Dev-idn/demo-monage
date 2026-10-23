@@ -1,0 +1,79 @@
+{
+  "name": "monage-fe-demo",
+  "private": true,
+  "version": "1.24.0",
+  "description": "Monage Frontend Standalone Demo - Zero-Backend Edition with MSW and IndexedDB",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [
+    "finance",
+    "money-management",
+    "monage",
+    "expense-tracker",
+    "react",
+    "budget-app",
+    "personal-finance"
+  ],
+  "author": "Monage Team",
+  "license": "MIT",
+  "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
+    "@tailwindcss/vite": "^4.2.4",
+    "@types/supercluster": "^7.1.3",
+    "axios": "^1.16.0",
+    "idb": "^8.0.3",
+    "lucide-react": "^1.16.0",
+    "maplibre-gl": "^6.15.0",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "react-hook-form": "^7.76.0",
+    "react-router-dom": "^7.14.2",
+    "react-select": "^5.10.2",
+    "recharts": "^2.15.4",
+    "supercluster": "^8.0.1",
+    "tailwindcss": "^4.2.4",
+    "vite-plugin-svgr": "^5.2.0",
+    "xlsx": "^0.18.5",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/geojson": "^7946.0.16",
+    "@types/node": "^24.12.2",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "eslint": "^10.2.1",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.5.0",
+    "msw": "^2.14.6",
+    "typescript": "~6.0.2",
+    "typescript-eslint": "^8.58.2",
+    "vite": "^8.0.10"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/monage/monage-fe"
+  },
+  "bugs": {
+    "url": "https://github.com/monage/monage-fe/issues"
+  },
+  "homepage": "https://monage.app",
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+@import "tailwindcss";
+@import "./tokens.css";
+
+@layer base {
+  /* Sembunyikan burger toggle sidebar di desktop — sidebar selalu tampil. */
+  @media (min-width: 1024px) {
+    button[aria-label="Toggle sidebar"] {
+      display: none !important;
+    }
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled),
+  summary,
+  label[for],
+  select:not(:disabled),
+  [type="button"]:not(:disabled),
+  [type="submit"]:not(:disabled),
+  [type="reset"]:not(:disabled),
+  [type="checkbox"]:not(:disabled),
+  [type="radio"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+}
