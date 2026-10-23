@@ -2,24 +2,107 @@
 <html lang="id">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Monage — Standalone Interactive Demo</title>
     <script type="text/javascript">
-      // Simpan URL lengkap yang diminta sebelum reload ke sessionStorage
-      sessionStorage.setItem("monage:spa_redirect", window.location.href);
+      // Single Page Apps for GitHub Pages
+      // MIT License - based on https://github.com/rafgraph/spa-github-pages
+      (function() {
+        var l = window.location;
 
-      // Cari base path repo GitHub Pages (misal /demo-monage/) atau root '/'
-      var path = window.location.pathname;
-      var match = path.match(/^\/[^\/]+/);
-      var basePath = match ? match[0] + '/' : '/';
+        // Anti-Loop Guard 1: Jika URL sudah berupa query SPA redirect (?/),
+        // jangan redirect lagi agar tidak terjadi recursive looping.
+        if (l.search && (l.search.indexOf('?/') !== -1 || l.search.indexOf('?p=/') !== -1)) {
+          return;
+        }
 
-      // Redirect ke base index.html
-      window.location.replace(basePath);
+        // Anti-Loop Guard 2: Cek frekuensi redirect dalam session untuk mencegah infinite reload loop.
+        var LOOP_KEY = "monage:spa_redirect_guard";
+        var lastTs = parseInt(sessionStorage.getItem(LOOP_KEY) || "0", 10);
+        var now = Date.now();
+        if (now - lastTs < 3000) {
+          console.warn("[SPA] 404 infinite redirect loop detected. Aborting redirect.");
+          sessionStorage.removeItem(LOOP_KEY);
+          return;
+        }
+        sessionStorage.setItem(LOOP_KEY, now.toString());
+
+        // Hitung pathSegmentsToKeep:
+        // Untuk GitHub Pages Project Pages (e.g. https://username.github.io/demo-monage/...),
+        // segmen repo (1) harus dipertahankan.
+        // Untuk Custom Domain (e.g. https://demo.monage.my.id/...) atau root, segments = 0.
+        var pathSegments = l.pathname.slice(1).split('/');
+        var isGitHubProject = l.hostname.indexOf('github.io') !== -1 && pathSegments.length > 0 && pathSegments[0] === 'demo-monage';
+        var pathSegmentsToKeep = isGitHubProject ? 1 : 0;
+
+        var repoBase = l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/');
+        if (!repoBase.endsWith('/')) repoBase += '/';
+
+        var routeSegments = pathSegments.slice(pathSegmentsToKeep);
+        var routePath = routeSegments.join('/').replace(/&/g, '~and~');
+        var searchParam = l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '';
+
+        var targetUrl = l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+          repoBase + '?/' + routePath + searchParam + l.hash;
+
+        // Redirect dengan replace agar history entry tetap bersih
+        l.replace(targetUrl);
+      })();
     </script>
+    <style>
+      body {
+        margin: 0;
+        padding: 48px 24px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background-color: #f9fafb;
+        color: #1f2937;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 80vh;
+        text-align: center;
+      }
+      .card {
+        background: white;
+        padding: 32px;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+        max-width: 440px;
+        width: 100%;
+      }
+      h2 {
+        margin-top: 0;
+        font-size: 20px;
+        color: #111827;
+      }
+      p {
+        font-size: 14px;
+        color: #4b5563;
+        line-height: 1.5;
+        margin-bottom: 24px;
+      }
+      a.btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #2563eb;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 14px;
+        transition: background-color 0.2s;
+      }
+      a.btn:hover {
+        background-color: #1d4ed8;
+      }
+    </style>
   </head>
   <body>
-    <div style="font-family: system-ui, sans-serif; text-align: center; padding: 48px 24px; color: #374151;">
+    <div class="card">
       <h2>Memuat Simulasi Demo Monage...</h2>
-      <p>Sedang mengalihkan ke rute aplikasi.</p>
+      <p>Jika pengalihan otomatis tidak merespons dalam beberapa detik, silakan klik tombol di bawah untuk kembali ke Beranda.</p>
+      <a class="btn" href="./">Kembali ke Beranda</a>
     </div>
   </body>
 </html>

@@ -6,16 +6,20 @@ export const API_INSTANCE_NAME = "main";
 
 let initialized = false;
 
+export function getApiBaseUrl(): string {
+  const rawBase = (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? "/api";
+  const appBase = (import.meta.env.BASE_URL as string | undefined) ?? "/";
+  const normalizedAppBase = appBase === "./" ? "" : appBase.replace(/\/$/, "");
+  return rawBase.startsWith("/")
+    ? `${normalizedAppBase}${rawBase}`
+    : rawBase;
+}
+
 export function setupApi(): void {
   if (initialized) return;
   initialized = true;
 
-  const rawBase = (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? "/api";
-  const appBase = (import.meta.env.BASE_URL as string | undefined) ?? "/";
-  const normalizedAppBase = appBase === "./" ? "" : appBase.replace(/\/$/, "");
-  const baseURL = rawBase.startsWith("/")
-    ? `${normalizedAppBase}${rawBase}`
-    : rawBase;
+  const baseURL = getApiBaseUrl();
 
   AxiosKit.register(API_INSTANCE_NAME, {
     baseURL,

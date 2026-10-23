@@ -7,15 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Monage — Standalone Interactive Demo</title>
     <script type="text/javascript">
-      (function() {
-        var redirect = sessionStorage.getItem("monage:spa_redirect");
-        if (redirect) {
-          sessionStorage.removeItem("monage:spa_redirect");
-          if (redirect !== window.location.href) {
-            window.history.replaceState(null, null, redirect);
-          }
+      // Single Page Apps for GitHub Pages (https://github.com/rafgraph/spa-github-pages)
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, null,
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
         }
-      })();
+        // Bersihkan guard flags saat sampai di index.html
+        sessionStorage.removeItem("monage:spa_redirect_guard");
+        sessionStorage.removeItem("monage:spa_redirect");
+      }(window.location));
     </script>
   </head>
   <body>

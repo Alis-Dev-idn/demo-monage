@@ -3,8 +3,8 @@
  * bookId) karena halaman ini diakses pelanggan tanpa login. Pakai `fetch`
  * langsung ke base URL backend.
  */
-const BASE =
-  (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? "/api";
+import { getApiBaseUrl } from "@/utils/api";
+const BASE = getApiBaseUrl();
 
 export interface StorefrontProduct {
   _id: string;

@@ -8,7 +8,7 @@ import {
   type ReactNode,
 } from "react";
 import { ApiError } from "@dep/axios";
-import { api } from "@/utils/api";
+import { api, getApiBaseUrl } from "@/utils/api";
 import { setActiveBookId } from "@/utils/activeBook";
 import * as authService from "@/services/auth.service";
 import type { AuthTokens } from "@/services/auth.service";
@@ -85,8 +85,7 @@ function hasAccessToken(): boolean {
 async function tryRefreshFromCookie(): Promise<boolean> {
   const storage = api().getTokenStorage();
   if (!storage) return false;
-  const baseURL =
-    (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? "/api";
+  const baseURL = getApiBaseUrl();
   try {
     const res = await fetch(`${baseURL}/auth/refresh`, {
       method: "POST",
