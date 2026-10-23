@@ -10,7 +10,6 @@ import type {
 } from "@/types";
 import { endpoint } from "../baseUrl";
 import { DEFAULT_BOOK_ID } from "../data/seed";
-import { __getMockPlan } from "./subscription";
 
 let nextNum = 1;
 function nid(prefix: string): string {
@@ -105,8 +104,98 @@ function seedDemoPlan(year: number, month: number, bookId: string): MonthlyPlan 
 }
 
 const now = new Date();
+const currentYear = now.getFullYear();
+const currentMonth = now.getMonth() + 1;
+const prevMonth = currentMonth === 1 ? 12 : currentMonth - 1;
+const prevYear = currentMonth === 1 ? currentYear - 1 : currentYear;
+
+function createSecondDemoPlan(year: number, month: number, bookId: string): MonthlyPlan {
+  const weeks = buildEmptyWeeks(year, month);
+  if (weeks[0]) {
+    weeks[0].groups = [
+      {
+        _id: nid("group"),
+        kind: "shopping",
+        name: "Keperluan Rumah Tangga",
+        icon: "Home",
+        linkedCategoryId: "c3",
+        items: [
+          { _id: nid("item"), name: "Sabun Cuci & Deterjen", quantity: 2, unit: "pack", estimatedPrice: 48000, linkedAccountId: "a1", done: true, order: 1 },
+          { _id: nid("item"), name: "Lampu LED Hemat Energi", quantity: 3, unit: "buah", estimatedPrice: 90000, linkedAccountId: "a1", done: false, order: 2 },
+          { _id: nid("item"), name: "Sapu & Alat Pel Baru", quantity: 1, unit: "set", estimatedPrice: 65000, linkedAccountId: "a1", done: false, order: 3 },
+        ],
+      },
+      {
+        _id: nid("group"),
+        kind: "shopping",
+        name: "Tagihan & Langganan Digital",
+        icon: "Wifi",
+        linkedCategoryId: "c2",
+        items: [
+          { _id: nid("item"), name: "Internet Fiber 50Mbps", quantity: 1, unit: "bulan", estimatedPrice: 385000, linkedAccountId: "a1", done: true, order: 1 },
+          { _id: nid("item"), name: "Langganan Spotify & Cloud", quantity: 1, unit: "bulan", estimatedPrice: 79000, linkedAccountId: "a2", done: false, order: 2 },
+        ],
+      },
+    ];
+  }
+  return {
+    _id: nid("plan"),
+    userId: "u1",
+    bookId,
+    period: { year, month },
+    name: `Kebutuhan Rumah & Rutin ${new Date(year, month - 1).toLocaleString("id-ID", { month: "long" })} ${year}`,
+    totalBudget: 1_200_000,
+    weeks,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+}
+
+function createBusinessDemoPlan(year: number, month: number, bookId: string): MonthlyPlan {
+  const weeks = buildEmptyWeeks(year, month);
+  if (weeks[0]) {
+    weeks[0].groups = [
+      {
+        _id: nid("group"),
+        kind: "shopping",
+        name: "Bahan Baku Kopi & Susu",
+        icon: "Coffee",
+        items: [
+          { _id: nid("item"), name: "Biji Kopi House Blend 5kg", quantity: 5, unit: "kg", estimatedPrice: 450000, linkedAccountId: "a-kasir-laci", done: true, order: 1 },
+          { _id: nid("item"), name: "Susu UHT Fresh 24 Liter", quantity: 24, unit: "liter", estimatedPrice: 432000, linkedAccountId: "a-kasir-laci", done: true, order: 2 },
+          { _id: nid("item"), name: "Gula Aren Organik 10kg", quantity: 10, unit: "kg", estimatedPrice: 240000, linkedAccountId: "a-kasir-laci", done: false, order: 3 },
+        ],
+      },
+      {
+        _id: nid("group"),
+        kind: "shopping",
+        name: "Kemasan & Packaging",
+        icon: "Package",
+        items: [
+          { _id: nid("item"), name: "Cup Sablon 16oz (1000 pcs)", quantity: 1, unit: "dus", estimatedPrice: 350000, linkedAccountId: "a-qris-bank", done: false, order: 1 },
+          { _id: nid("item"), name: "Sedotan Kertas Ramah Lingkungan", quantity: 5, unit: "pack", estimatedPrice: 75000, linkedAccountId: "a-kasir-laci", done: false, order: 2 },
+        ],
+      },
+    ];
+  }
+  return {
+    _id: nid("plan"),
+    userId: "u-business",
+    bookId,
+    period: { year, month },
+    name: `Belanja Operasional Warung ${new Date(year, month - 1).toLocaleString("id-ID", { month: "long" })} ${year}`,
+    totalBudget: 3_500_000,
+    weeks,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+}
+
 const plans: MonthlyPlan[] = [
-  seedDemoPlan(now.getFullYear(), now.getMonth() + 1, DEFAULT_BOOK_ID),
+  seedDemoPlan(currentYear, currentMonth, DEFAULT_BOOK_ID),
+  createSecondDemoPlan(currentYear, currentMonth, DEFAULT_BOOK_ID),
+  seedDemoPlan(prevYear, prevMonth, DEFAULT_BOOK_ID),
+  createBusinessDemoPlan(currentYear, currentMonth, "book-business-warung"),
 ];
 
 function findPlanByPeriod(
@@ -261,27 +350,6 @@ function buildProgress(plan: MonthlyPlan): MonthlyPlanProgress {
   };
 }
 
-function quotaCheck(bookId: string): { allowed: boolean; message?: string; details?: Record<string, unknown> } {
-  const plan = __getMockPlan();
-  const limit = plan.maxMonthlyPlans;
-  if (limit === null) return { allowed: true };
-  if (limit === 0) {
-    return {
-      allowed: false,
-      message: `Fitur Perencanaan Bulanan tidak tersedia di paket ${plan.name}. Upgrade ke Personal atau lebih tinggi.`,
-      details: { limit: 0, tier: plan.tier },
-    };
-  }
-  const used = plans.filter((p) => (p.bookId ?? DEFAULT_BOOK_ID) === bookId).length;
-  if (used >= limit) {
-    return {
-      allowed: false,
-      message: `Pembukuan ini sudah punya ${limit} perencanaan di paket ${plan.name}. Hapus salah satu atau upgrade.`,
-      details: { limit, used, tier: plan.tier },
-    };
-  }
-  return { allowed: true };
-}
 
 export const monthlyPlanHandlers = [
   http.get(endpoint("/monthly-plans"), ({ request }) => {
@@ -297,6 +365,22 @@ export const monthlyPlanHandlers = [
     }
     const found = findPlanByPeriod(year, month, bookId);
     return HttpResponse.json(found ?? null);
+  }),
+
+  // ── Multi-Plan List Endpoint (/monthly-plans/list) ──────────────────────────
+  http.get(endpoint("/monthly-plans/list"), ({ request }) => {
+    const url = new URL(request.url);
+    const year = Number(url.searchParams.get("year"));
+    const month = Number(url.searchParams.get("month"));
+    const bookId = url.searchParams.get("bookId") ?? DEFAULT_BOOK_ID;
+
+    let matched = plans.filter((p) => (p.bookId ?? DEFAULT_BOOK_ID) === bookId);
+    if (year && month) {
+      matched = matched.filter(
+        (p) => p.period.year === year && p.period.month === month,
+      );
+    }
+    return HttpResponse.json(matched);
   }),
 
   http.get(endpoint("/monthly-plans/:id"), ({ params }) => {
@@ -317,40 +401,50 @@ export const monthlyPlanHandlers = [
       period: { year: number; month: number };
       totalBudget?: number;
       bookId?: string;
+      copyFromPlanId?: string;
+      copyGroupIds?: string[];
     };
     const bookId = body.bookId ?? DEFAULT_BOOK_ID;
-    const quota = quotaCheck(bookId);
-    if (!quota.allowed) {
-      return HttpResponse.json(
-        {
-          statusCode: 422,
-          code: "QUOTA_EXCEEDED",
-          message: quota.message,
-          details: quota.details,
-        },
-        { status: 422 },
-      );
+
+    const initialWeeks = buildEmptyWeeks(body.period.year, body.period.month);
+
+    // Salin group dari plan sumber jika disediakan
+    if (body.copyFromPlanId) {
+      const sourcePlan = plans.find((p) => p._id === body.copyFromPlanId);
+      if (sourcePlan && initialWeeks[0]) {
+        const sourceGroups = sourcePlan.weeks.flatMap((w) => w.groups);
+        const filteredGroups =
+          body.copyGroupIds && body.copyGroupIds.length > 0
+            ? sourceGroups.filter((g) => body.copyGroupIds!.includes(g._id))
+            : sourceGroups;
+
+        initialWeeks[0].groups = filteredGroups.map((g) => ({
+          ...g,
+          _id: nid("group"),
+          items: g.items.map((it) => ({
+            ...it,
+            _id: nid("item"),
+            done: false,
+            linkedTransactionId: undefined,
+            ingredients: it.ingredients?.map((ing) => ({
+              ...ing,
+              _id: nid("ing"),
+              done: false,
+              linkedTransactionId: undefined,
+            })),
+          })),
+        }));
+      }
     }
-    const existing = findPlanByPeriod(body.period.year, body.period.month, bookId);
-    if (existing) {
-      return HttpResponse.json(
-        {
-          statusCode: 409,
-          code: "CONFLICT",
-          message: "Plan untuk bulan ini sudah ada.",
-          details: { existingId: existing._id },
-        },
-        { status: 409 },
-      );
-    }
+
     const fresh: MonthlyPlan = {
       _id: nid("plan"),
       userId: "u1",
       bookId,
       period: body.period,
       name: body.name,
-      totalBudget: body.totalBudget,
-      weeks: buildEmptyWeeks(body.period.year, body.period.month),
+      totalBudget: body.totalBudget ?? 2_500_000,
+      weeks: initialWeeks,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
