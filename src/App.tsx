@@ -82,7 +82,7 @@ const App = () => {
       <ModalStack />
       <ConfirmContainer />
       <OfflineIndicator />
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
         <ErrorBoundary>
           <AuthProvider>
             <PreferencesProvider>

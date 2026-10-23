@@ -6,8 +6,18 @@ import svgr from "vite-plugin-svgr";
 
 const r = (p: string) => fileURLToPath(new URL(p, import.meta.url))
 
+const getBasePath = () => {
+    if (process.env.BASE_URL) return process.env.BASE_URL;
+    if (process.env.GITHUB_REPOSITORY) {
+        const repo = process.env.GITHUB_REPOSITORY.split('/')[1];
+        return `/${repo}/`;
+    }
+    return '/';
+};
+
 // https://vite.dev/config/
 export default defineConfig({
+    base: getBasePath(),
     plugins: [
         react(),
         tailwindcss(),

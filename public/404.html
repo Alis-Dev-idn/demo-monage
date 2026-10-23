@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <title>Monage — Standalone Interactive Demo</title>
+    <script type="text/javascript">
+      // Simpan URL lengkap yang diminta sebelum reload ke sessionStorage
+      sessionStorage.setItem("monage:spa_redirect", window.location.href);
+
+      // Cari base path repo GitHub Pages (misal /demo-monage/) atau root '/'
+      var path = window.location.pathname;
+      var match = path.match(/^\/[^\/]+/);
+      var basePath = match ? match[0] + '/' : '/';
+
+      // Redirect ke base index.html
+      window.location.replace(basePath);
+    </script>
+  </head>
+  <body>
+    <div style="font-family: system-ui, sans-serif; text-align: center; padding: 48px 24px; color: #374151;">
+      <h2>Memuat Simulasi Demo Monage...</h2>
+      <p>Sedang mengalihkan ke rute aplikasi.</p>
+    </div>
+  </body>
+</html>

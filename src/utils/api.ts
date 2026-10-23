@@ -10,8 +10,12 @@ export function setupApi(): void {
   if (initialized) return;
   initialized = true;
 
-  const baseURL =
-    (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? "/api";
+  const rawBase = (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? "/api";
+  const appBase = (import.meta.env.BASE_URL as string | undefined) ?? "/";
+  const normalizedAppBase = appBase === "./" ? "" : appBase.replace(/\/$/, "");
+  const baseURL = rawBase.startsWith("/")
+    ? `${normalizedAppBase}${rawBase}`
+    : rawBase;
 
   AxiosKit.register(API_INSTANCE_NAME, {
     baseURL,

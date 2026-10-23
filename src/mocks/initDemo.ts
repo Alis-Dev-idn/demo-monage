@@ -35,13 +35,20 @@ export async function initDemoEnvironment(): Promise<void> {
 
   // 3. Start MSW worker
   try {
+    const rawBase = import.meta.env.BASE_URL || "/";
+    const appBase = rawBase === "./" ? "" : rawBase.replace(/\/$/, "");
+    const swUrl = `${appBase}/mockServiceWorker.js`;
+
     await worker.start({
       onUnhandledRequest: "warn",
       serviceWorker: {
-        url: "/mockServiceWorker.js",
+        url: swUrl,
+        options: {
+          scope: rawBase,
+        },
       },
     });
-    console.info("[Demo] MSW v2 engine started with IndexedDB persistence.");
+    console.info(`[Demo] MSW v2 engine started with IndexedDB persistence (swUrl: ${swUrl}).`);
   } catch (err) {
     console.warn("[Demo] MSW worker registration failed or unsupported in this context:", err);
   }
